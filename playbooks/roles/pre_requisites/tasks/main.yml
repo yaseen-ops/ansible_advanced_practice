@@ -1,0 +1,11 @@
+- name: Install DNF
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  yum:
+    name: dnf
+    state: latest
+
+- name: Install Git
+  dnf:
+    name: git
+    state: latest

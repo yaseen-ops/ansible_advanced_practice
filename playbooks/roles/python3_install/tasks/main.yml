@@ -1,0 +1,35 @@
+- name: Check Python Version
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  command: python --version
+  register: python_version
+- debug:
+    msg: "Python3 Already Available"
+  when: python_version.stderr.find('3') != -1 or python_version.stdout.find('3') != -1
+- name: Install Python3
+  block:
+    - name: install epel repo
+      command: yum -y install epel-release
+    - name: update all packages
+      command: yum -y update
+    - name: install other packages
+      command: "{{ item }}"
+      with_items:
+        - yum groupinstall "Development Tools" -y
+        - yum install openssl-devel libffi-devel bzip2-devel -y
+        - yum install wget -y
+    - name: download python package
+      command: wget {{ python_download_url }} -P /tmp/
+    - name: install python-{{ py_version }}
+      command: "{{ item }}"
+      with_items:
+        - tar xvfz /tmp/Python-{{ py_version }}.tgz --directory=/tmp/
+        - /tmp/Python-{{ py_version }}/configure --enable-optimizations --prefix=/opt/python-{{ py_version }}/
+        - make install
+        - ln -s /opt/python-{{ py_version }}/bin/python3 /usr/bin/python -f
+        - ln -s /opt/python-{{ py_version }}/bin/python3 /usr/bin/python3 -f
+        - ln -s /opt/python-{{ py_version }}/bin/python3 /usr/bin/python3.9 -f
+        - ln -s /opt/python-{{ py_version }}/bin/pip3 /usr/bin/pip -f
+        - ln -s /opt/python-{{ py_version }}/bin/pip3 /usr/bin/pip3 -f
+        - ln -s /opt/python-{{ py_version }}/bin/pip3 /usr/bin/pip3.9 -f
+  when: python_version.stderr.find('3') == -1 and python_version.stdout.find('3') == -1

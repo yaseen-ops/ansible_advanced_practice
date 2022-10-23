@@ -1,0 +1,37 @@
+-
+  name: Install HTTPD Service
+  hosts: app
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  tasks:
+    - name: Install Packages
+      package:
+        name:
+          - httpd
+          - mod_ssl
+          - php
+          - php-mysql
+        state: latest
+    - name: Start httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: update httpd config file
+      command: sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
+    - name: remove index.html file
+      file:
+        path: /var/www/html/index.html
+        state: absent
+    - name: Install Git
+      yum:
+        name: git
+    - name: clone repository
+      command: git clone https://github.com/kodekloudhub/learning-app-ecommerce.git /var/www/html/
+    - name: Update DB server in index.php file
+      command: sed -i 's/172.20.1.101/localhost/g' /var/www/html/index.php
+    - name: Restart Httpd service
+      service:
+        name: httpd
+        state: restarted
+

@@ -1,0 +1,53 @@
+- name: KoudeKloud Demo LAMP Application
+  hosts: app
+  tasks:
+    - name: Install Python3
+      import_role:
+        name: python3_install
+      tags: Install Python3
+
+    - name: Install Prerequisites
+      import_role:
+        name: pre_requisites
+      tags: Prerequisites
+
+    - name: DB Install
+      import_role:
+        name: database/mariadb_install
+      tags: MariaDB Setup
+    - name: DB Configure
+      import_role:
+        name: database/mariadb_configure
+      tags: MariaDB Setup
+
+    - name: Install HTTPD service
+      import_role:
+        name: httpd_install
+      tags: HTTPD Install
+
+    - name: PHP Installation
+      import_role:
+        name: php_install
+      tags: PHP Install
+
+    - name: Clean up HTML Directory
+      command: "{{ item }}"
+      with_items:
+        - rm -rf /var/www/html/
+        - mkdir /var/www/html/
+
+    - name: Deploy Application
+      git:
+        repo: "{{ app_download_url }}"
+        dest: /var/www/html/
+
+    - name: update httpd config file
+      command: sed -i 's/index.html/index.php/g' /etc/httpd/conf/httpd.conf
+
+    - name: Update DB server in index.php file
+      command: sed -i 's/172.20.1.101/{{ http_host }}/g' /var/www/html/index.php
+
+    - name: Restart Httpd Service
+      service:
+        name: httpd
+        state: restarted

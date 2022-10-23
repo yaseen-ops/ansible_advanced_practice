@@ -1,0 +1,6 @@
+http_host: localhost
+app_download_url: https://github.com/kodekloudhub/learning-app-ecommerce.git
+python_download_url: https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
+py_version: 3.9.13
+simple_webapp_download_url: https://github.com/kodekloudhub/simple_web_application.git
+ansible_python_interpreter: /usr/bin/python

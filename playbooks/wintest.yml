@@ -1,0 +1,11 @@
+-
+  name: Window connection testing
+  hosts: win
+  vars:
+    ansible_winrm_server_cert_validation: ignore
+  gather_facts: false
+  tasks:
+    - name: create a file
+      win_file:
+        path: C:\Users\S0117996\ansible_temp.txt
+        state: touch

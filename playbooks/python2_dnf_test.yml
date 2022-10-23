@@ -1,0 +1,10 @@
+-
+  name: python2 dnf test
+  hosts: app
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  tasks:
+    - name: Install Packages
+      dnf:
+        name: httpd
+        state: latest

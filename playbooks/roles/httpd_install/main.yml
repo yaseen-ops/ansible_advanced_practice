@@ -1,0 +1,13 @@
+- name: Install HTTPD Package
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - httpd
+    - mod_ssl
+
+- name: Start httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes

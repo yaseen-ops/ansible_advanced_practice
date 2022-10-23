@@ -1,0 +1,10 @@
+-
+  name: Condition example
+  hosts: app
+  tasks:
+    - name: check service running
+      shell: "netstat -tulpn | grep 5000 | awk '{print $7}' | cut -d '/' -f1"
+      register: process_id
+    - name: Stopping Web Service
+      shell: "kill -9 {{ process_id.stdout_lines[0] }}"
+      when: 'process_id.stdout_lines | length > 0'

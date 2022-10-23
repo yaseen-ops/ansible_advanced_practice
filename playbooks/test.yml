@@ -1,0 +1,39 @@
+-
+  name: test
+  hosts: app
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+#    - name: host details
+#      command: hostnamectl
+#    - name: Display resolv.conf contents
+#      command: cat resolv.conf chdir=/etc
+#    - name: install httpd
+#      yum:
+#        name: httpd
+#        state: started
+    - name: install mariadb
+      dnf:
+        name: mariadb-server
+        state: latest
+    - name: Start mariadb
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+    - name: Create Database
+      mysql_db:
+        name: ecomdb
+    - name: Create User
+      mysql_user:
+        name: ecomuser
+        password: ecompassword
+        priv: '*.*:ALL,GRANT'
+        state: present
+        check_implicit_admin: yes
+    - name: Insert query
+      mysql_query:
+        query:
+          - USE ecomdb
+          - CREATE TABLE products (id mediumint(8) unsigned NOT NULL auto_increment,Name varchar(255) default NULL,Price varchar(255) default NULL, ImageUrl varchar(255) default NULL,PRIMARY KEY (id)) AUTO_INCREMENT=1
+          - INSERT INTO products (Name,Price,ImageUrl) VALUES ("Laptop","100","c-1.png"),("Drone","200","c-2.png"),("VR","300","c-3.png"),("Tablet","50","c-5.png"),("Watch","90","c-6.png"),("Phone Covers","20","c-7.png"),("Phone","80","c-8.png"),("Laptop","150","c-4.png")

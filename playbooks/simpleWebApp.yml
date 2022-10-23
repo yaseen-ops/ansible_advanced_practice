@@ -1,0 +1,37 @@
+- name: Deploy a Simple Web Application
+  hosts: app
+  tasks:
+    - name: Install Python3
+      import_role:
+        name: python3_install
+      tags: Install Python3
+
+    - name: Install Prerequisites
+      import_role:
+        name: pre_requisites
+      tags: Prerequisites
+
+    - name: DB Install
+      import_role:
+        name: database/mysql_install
+      tags: MYSQL Setup
+    - name: DB Configure
+      import_role:
+        name: database/mysql_configure
+      tags: MYSQL Setup
+
+    - name: Install Flask
+      pip:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - flask
+        - flask-mysql
+
+    - name: Clone repo for app.py
+      git:
+        repo: "{{ simple_webapp_download_url }}"
+        dest: /opt/simple_webapp
+
+    - name: Start Web server
+      shell: FLASK_APP=/opt/simple_webapp/app.py nohup python -m flask run --host=0.0.0.0 &

@@ -1,0 +1,28 @@
+-
+  name: test
+  hosts: app
+#  connection: local
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  tasks:
+    - name: check python version
+      stat:
+        path: "/usr/bin/python"
+      register: file_data
+    - name: Check Python Version
+      command: python --version
+      register: python_version
+#      when: file_data.stat.exists
+    - name: if python3 installed
+      debug:
+#        msg: "{{ python_version }}"
+        msg: "Python3 already Installed"
+      when: python_version.stderr.find('3') != -1 or python_version.stdout.find('3') != -1
+#    - name: if python3 not installed
+    - name: Installing Python3
+      import_role:
+        name: python3_install
+      tags: Install Python3
+#      debug:
+#        msg: "Python3 not installed"
+      when: python_version.stderr.find('3') == -1 and python_version.stdout.find('3') == -1

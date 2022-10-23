@@ -1,0 +1,21 @@
+- name: create MySQL configuration file
+  copy:
+    content: |
+      [client]
+      user=root
+      password="@targ8et"
+    dest: "/etc/.my.cnf"
+
+- name: Create Database
+  mysql_db:
+    name: employee_db
+
+- name: Create User
+  mysql_user:
+    name: db_user
+    password: Passw0rd
+    priv: '*.*:ALL,GRANT'
+    state: present
+#    host: '%'
+
+

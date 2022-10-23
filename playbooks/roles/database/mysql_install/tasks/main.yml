@@ -1,0 +1,40 @@
+- name: Upgrade zlib to latest version
+  shell: "{{ item }}"
+  args:
+    chdir: /tmp
+  with_items:
+    - "wget https://zlib.net/zlib-1.2.13.tar.gz"
+    - "tar -xzf zlib-1.2.13.tar.gz"
+    - "/tmp/zlib-1.2.13/configure  --prefix=/usr"
+    - "/usr/bin/make install"
+
+- name: Install MySQL community repository
+  dnf:
+    name: "http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm"
+    state: present
+
+- name: install mysql
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  yum:
+    name:
+      - mysql-server
+      - mysql-devel
+    state: latest
+
+- name: Start mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Install packages
+  pip:
+    name:
+      - PyMySQL
+      - mysqlclient
+
+- name: Install packages
+  dnf:
+    name: MySQL-python
+    state: present
