@@ -1,5 +1,5 @@
 - name: Install PHP
-  dnf:
+  yum:
     name: "{{ item }}"
     state: latest
   with_items:

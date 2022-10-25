@@ -1,5 +1,5 @@
 - name: Install HTTPD Package
-  dnf:
+  yum:
     name: "{{ item }}"
     state: latest
   with_items:

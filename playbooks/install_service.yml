@@ -2,7 +2,7 @@
   name: Install HTTPD Service
   hosts: app
   vars:
-    ansible_python_interpreter: /usr/bin/python2
+    ansible_python_interpreter: /usr/bin/python
   tasks:
     - name: Install Packages
       package:

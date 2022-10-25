@@ -2,9 +2,9 @@
   name: python2 dnf test
   hosts: app
   vars:
-    ansible_python_interpreter: /usr/bin/python2
+    ansible_python_interpreter: /usr/bin/python
   tasks:
     - name: Install Packages
-      dnf:
+      yum:
         name: httpd
         state: latest

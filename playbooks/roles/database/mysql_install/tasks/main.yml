@@ -9,13 +9,11 @@
     - "/usr/bin/make install"
 
 - name: Install MySQL community repository
-  dnf:
+  yum:
     name: "http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm"
     state: present
 
 - name: install mysql
-  vars:
-    ansible_python_interpreter: /usr/bin/python2
   yum:
     name:
       - mysql-server
@@ -35,6 +33,6 @@
       - mysqlclient
 
 - name: Install packages
-  dnf:
+  yum:
     name: MySQL-python
     state: present

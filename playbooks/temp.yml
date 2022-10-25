@@ -3,7 +3,7 @@
   hosts: app
 #  connection: local
   vars:
-    ansible_python_interpreter: /usr/bin/python2
+    ansible_python_interpreter: /usr/bin/python
   tasks:
     - name: check python version
       stat:

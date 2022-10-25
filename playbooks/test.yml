@@ -13,7 +13,7 @@
 #        name: httpd
 #        state: started
     - name: install mariadb
-      dnf:
+      yum:
         name: mariadb-server
         state: latest
     - name: Start mariadb

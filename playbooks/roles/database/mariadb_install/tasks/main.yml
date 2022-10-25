@@ -1,5 +1,5 @@
 - name: install mariadb
-  dnf:
+  yum:
     name:
       - mariadb-server
       - mariadb-devel

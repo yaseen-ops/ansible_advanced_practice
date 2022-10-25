@@ -1,6 +1,4 @@
 - name: Check Python Version
-  vars:
-    ansible_python_interpreter: /usr/bin/python2
   command: python --version
   register: python_version
 - debug:
